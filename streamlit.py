@@ -243,6 +243,7 @@ if 1==1:#st.button('Reserva'):
                 min_value=pd.to_datetime('1/6/2024', dayfirst=True),
                 max_value=pd.to_datetime('30/9/2024',dayfirst=True))
       if (fecha_entrada<hoy):
+          st.write('Introduzca una fecha de entrada posterior al día de hoy')
           return 0
       noches=int(st.number_input('Seleccione la cantidad de noches:',min_value=1))
 
