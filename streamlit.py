@@ -13,14 +13,16 @@ import streamlit as st
 from datetime import datetime, timedelta, date
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
-
 import joblib
-
+from streamlit_option_menu import option_menu
 import warnings
 warnings.filterwarnings('ignore')
 
+with st.sidebar:
+    selected = option_menu('Menu', ['Reserva'])
+
 #pd.set_option('mode.chained_assignment', None)
-if 1==1:#st.button('Reserva'):
+if selected == 'Reserva':#st.button('Reserva'):
     st.write("""
     ## REALIZA TU RESERVA AHORA
     """)
