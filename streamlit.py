@@ -20,7 +20,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 with st.sidebar:
-    selected = option_menu('Menu', ['Reserva'])
+    selected = option_menu('Menu', ['Chatbot','Reserva','Reseñas'])
 
 #pd.set_option('mode.chained_assignment', None)
 if selected == 'Reserva':#st.button('Reserva'):
