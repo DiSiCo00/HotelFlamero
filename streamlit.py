@@ -257,8 +257,7 @@ if 1==1:#st.button('Reserva'):
       room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
                      ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE', 'A'],
                      captions=['DOBLE SUPERIOR COTO', 'DOBLE SUPERIOR MAR', 'DELUXE VISTA COTO', 'DELUXE VISTA MAR', 
-                               'ESTUDIO COTO', 'ESTUDIO MAR', 'INDIVIDUAL', 'SUITE', 'APARTAMENTO PREMIUM'],
-                     label_visibility='hidden')
+                               'ESTUDIO COTO', 'ESTUDIO MAR', 'INDIVIDUAL', 'SUITE', 'APARTAMENTO PREMIUM'])
 
       #Calculamos el número de habitaciones con la función
       num_habitaciones = habitaciones(adultos, niños, room_type)
@@ -269,8 +268,7 @@ if 1==1:#st.button('Reserva'):
       st.write(f"Usted va a reservar {num_habitaciones} habitaciones")
       regimen=st.radio('Seleccione un régimen de entre los siguientes:',
                   ['MPA', 'MPC','PC', 'HD', 'SA'],
-                  captions=['MEDIA PENSIÓN ALMUERZO','MEDIA PENSIÓN CENA', 'PENSIÓN COMPLETA', 'HABITACIÓN Y DESAYUNO', 'SOLO ALOJAMIENTO'],
-                  label_visibility='hidden'))
+                  captions=['MEDIA PENSIÓN ALMUERZO','MEDIA PENSIÓN CENA', 'PENSIÓN COMPLETA', 'HABITACIÓN Y DESAYUNO', 'SOLO ALOJAMIENTO'])
 
 
       hora = int(datetime.now().strftime('%H'))
