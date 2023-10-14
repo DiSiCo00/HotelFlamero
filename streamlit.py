@@ -162,10 +162,11 @@ def habitaciones(adultos,niños,tipo_habitacion):
 
 #Función para crear nuevas reservas
 def new_Booking():
-  reservas_total=pd.read_csv('sample_data/reservas_total_preprocesado.csv')
+  reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
 
 
   fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
+                value=pd.to_datetime('1/6/2024', dayfirst=True),
                 min_value=pd.to_datetime('1/6/2024', dayfirst=True),
                 max_value=pd.to_datetime('30/9/2024',dayfirst=True))
 
@@ -236,6 +237,7 @@ def new_Booking_fecha_reserva():
                 max_value=pd.to_datetime('1/6/2024',dayfirst=True))
 
   fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
+                value=pd.to_datetime('1/6/2024', dayfirst=True),
                 min_value=pd.to_datetime('1/6/2024', dayfirst=True),
                 max_value=pd.to_datetime('30/9/2024',dayfirst=True))
 
