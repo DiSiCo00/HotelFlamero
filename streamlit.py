@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, date
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
 import joblib
-from streamlit-option-menu import option_menu
+from streamlit_option_menu import option_menu
 import warnings
 warnings.filterwarnings('ignore')
 
