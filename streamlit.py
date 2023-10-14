@@ -67,7 +67,7 @@ def predict_model(obj,model=random_forest):
   _sample = reservas_total[columnas_X]
 
   # Añadimos la nueva reserva a los datos
-  X_new = pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
+  X_new = pd.concat([_sample, pd.DataFrame(obj[columnas_canc_X],index=[0])], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -83,6 +83,7 @@ def predict_model(obj,model=random_forest):
   prob=model.predict_proba(X_new[-1].reshape(1, -1))[0,1]
 
   #Predecimos la probabilidad de cancelación de la nueva reserva
+  st.write(f"Su probabilidad de cancelación es de: {}".format(float(prob), 2))
   return prob
 
 #Función para simular nuevas reservas aleatorias
@@ -351,6 +352,7 @@ def new_Booking_fecha_reserva():
   precio_total=precio_alojamiento+precio_desayuno+precio_almuerzo+precio_cena
 
   obj = {
+    "Hoy": fecha_reserva,
     "Noches": noches,
     "Tip.Hab.Fra." : room_type,
     "Régimen factura": regimen,
@@ -371,7 +373,7 @@ def new_Booking_fecha_reserva():
   return obj
 
 #Función para predecir la fecha de cancelación de la reserva
-def cancel_date(obj: dict,model_canc=random_forest_canc, fecha_actual=date.today()):
+def cancel_date(obj: dict,model_canc=random_forest_canc):
   #Definimos las variables que usaremos en el modelo
   columnas_canc_X = ['Noches', 'Tip.Hab.Fra.', 'Régimen factura', 'AD', 'NI', 'CU', 'Horario venta', 'Precio alojamiento', 'Precio desayuno',
                    'Precio almuerzo', 'Precio cena', 'Cantidad Habitaciones', 'Mes Entrada', 'Mes Venta', 'Antelacion']
@@ -379,7 +381,7 @@ def cancel_date(obj: dict,model_canc=random_forest_canc, fecha_actual=date.today
   _sample = cancelaciones[columnas_canc_X]
 
   #Añadimos la nueva reserva a los datos
-  X_new =pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
+  X_new =pd.concat([_sample, pd.DataFrame(obj[columnas_canc_X],index=[0])], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -398,9 +400,11 @@ def cancel_date(obj: dict,model_canc=random_forest_canc, fecha_actual=date.today
   _days = float(_score) * obj["Antelacion"]
 
   #Sumamos los días a la fecha actual
-  cancel_date = fecha_actual + timedelta(_days)
+  cancel_date = obj['Hoy'] + timedelta(_days)
 
   st.write(f"La reserva se podría cancelar el día {cancel_date}")
   return cancel_date
     
-cancel_date(new_Booking_fecha_reserva())
+booking_date=new_Booking_fecha_reserva() 
+predict_model(booking_date)
+cancel_date(booking_date)
