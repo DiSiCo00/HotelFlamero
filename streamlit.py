@@ -41,7 +41,7 @@ if 1==1:#st.button('Reserva'):
 
     hoy=st.date_input('¿Qué día es hoy?',
             min_value=pd.to_datetime(datetime.now()),
-            max_value=pd.to_datetime('1/6/2024',dayfirst=True))
+            max_value=pd.to_datetime('31/8/2024',dayfirst=True))
 
     #Recuperamos el modelo del random forest
     random_forest = joblib.load("random_forest.pkl")
@@ -242,7 +242,8 @@ if 1==1:#st.button('Reserva'):
                 value=pd.to_datetime('1/6/2024', dayfirst=True),
                 min_value=pd.to_datetime('1/6/2024', dayfirst=True),
                 max_value=pd.to_datetime('30/9/2024',dayfirst=True))
-
+      if (fecha_entrada<hoy):
+          return 0
       noches=int(st.number_input('Seleccione la cantidad de noches:',min_value=1))
 
       print('Seleccione el número de adultos: \t')
