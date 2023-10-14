@@ -40,13 +40,13 @@ st.write("""
 """)
 
 # Recuperamos el modelo del random forest
-random_forest = joblib.load("sample_data/random_forest.pkl")
+random_forest = joblib.load("random_forest.pkl")
 
 # Recuperamos el modelo del random forest
-random_forest_canc = joblib.load("sample_data/random_forest_canc.pkl")
+random_forest_canc = joblib.load("random_forest_canc.pkl")
 
 #Leemos el csv reservas_total_preprocesado para recuperar el dataframe
-reservas_total=pd.read_csv('sample_data/reservas_total_preprocesado.csv')
+reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
 
 # Convertimos las columnas en formato de fecha
 reservas_total['Fecha entrada'] = pd.to_datetime(reservas_total['Fecha entrada'], dayfirst=True)
@@ -54,7 +54,7 @@ reservas_total['Fecha venta'] = pd.to_datetime(reservas_total['Fecha venta'], da
 reservas_total['Fecha Anulacion'] = pd.to_datetime(reservas_total['Fecha Anulacion'], dayfirst=True)
 
 #Leemos el csv para recuperar el dataframe
-cancelaciones=pd.read_csv('sample_data/cancelaciones.csv')
+cancelaciones=pd.read_csv('cancelaciones.csv')
 
 #Función para predercir la probabilidad de cancelación de una reserva con un modelo determinado
 def predict_model(obj,model=random_forest):
