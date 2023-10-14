@@ -34,7 +34,7 @@ import warnings
 warnings.filterwarnings('ignore' )
 
 #pd.set_option('mode.chained_assignment', None)
-while st.button('Reserva'):
+#if st.button('Reserva'):
     st.write("""
     ## REALIZA TU RESERVA AHORA
     """)
