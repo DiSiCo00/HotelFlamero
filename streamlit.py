@@ -400,7 +400,7 @@ def cancel_date(obj: dict,model_canc=random_forest_canc, fecha_actual=date.today
   #Sumamos los días a la fecha actual
   cancel_date = fecha_actual + timedelta(_days)
 
-  print(f"La reserva se podría cancelar el día {cancel_date}")
+  st.write(f"La reserva se podría cancelar el día {cancel_date}")
   return cancel_date
     
 cancel_date(new_Booking_fecha_reserva())
