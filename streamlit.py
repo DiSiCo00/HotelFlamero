@@ -304,7 +304,7 @@ def new_Booking_fecha_reserva():
   return obj
 
 #Fecha cancelación
-def cancel_date(obj: dict,model=random_forest,model_canc=random_forest_canc):
+def cancel_date(obj,model=random_forest,model_canc=random_forest_canc):
   columnas_canc_X=['Noches','Tip.Hab.Fra.','Régimen factura', 'AD', 'NI','CU','Horario venta',
             'Precio alojamiento','Precio desayuno', 'Precio almuerzo', 'Precio cena',
             'Cantidad Habitaciones','Mes Entrada','Mes Venta','Antelacion']
