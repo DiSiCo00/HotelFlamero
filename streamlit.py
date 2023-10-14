@@ -71,7 +71,7 @@ def predict_model(obj,model=random_forest):
   _sample = reservas_total[columnas_X]
 
   # Añadimos la nueva reserva a los datos
-  X_new = pd.concat([_sample, pd.DataFrame(obj),index=[0]], ignore_index=True)
+  X_new = pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -312,7 +312,7 @@ def cancel_date(obj: dict,model_canc=random_forest_canc):
   _sample = cancelaciones[columnas_canc_X]
 
   #Añadimos la nueva reserva a los datos
-  pd.concat([_sample, pd.DataFrame(obj),index=[0]]
+  X_new = pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
