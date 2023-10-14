@@ -249,19 +249,22 @@ def new_Booking():
   adultos=int(st.number_input('Seleccione el número de adultos:',min_value=1))
 
   print('Seleccione el número de niños: \t')
-  niños=int(st.number_input('Seleccione el número de niños:',min_value=1))
+  niños=int(st.number_input('Seleccione el número de niños:',min_value=0))
 
   print('Seleccione el número de cunas: \t')
-  cunas=int(st.number_input('Seleccione el número de cunas:',min_value=1))
+  cunas=int(st.number_input('Seleccione el número de cunas:',min_value=0))
 
-  if niños>0:
-    room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
+  room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
                      ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'])
-  else:
-    room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
-                     ['DSC', 'DSM', 'DVC', 'EC', 'EM', 'SUITE'])
 
-  num_habitaciones=habitaciones(adultos,niños,room_type)
+  #Calculamos el número de habitaciones con la función
+  num_habitaciones = habitaciones(adultos, niños, room_type)
+
+  while (num_habitaciones == 0):
+      st.write('''La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación''')
+      room_type = st.radio('Seleccione un tipo de habitación de entre los siguientes:',
+                ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'])
+      num_habitaciones = habitaciones(adultos, niños, room_type)
 
   regimen=st.radio('Seleccione un régimen de entre los siguientes:',
                   ['MPA', 'MPC','PC', 'HD', 'SA'])
