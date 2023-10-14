@@ -1,4 +1,1 @@
-matplotlib
-seaborn
-tensorflow
 scikit-learn==1.2.2
