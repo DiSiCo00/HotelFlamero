@@ -229,7 +229,7 @@ def new_Booking():
 
 #Función para crear nuevas reservas
 def new_Booking_fecha_reserva():
-  reservas_total=pd.read_csv('sample_data/reservas_total_preprocesado.csv')
+  reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
 
   fecha_reserva=st.date_input('¿Qué día es hoy?',
                 min_value=pd.to_datetime(datetime.now()),
