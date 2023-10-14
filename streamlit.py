@@ -87,7 +87,7 @@ def predict_model(obj,model=random_forest):
   prob=model.predict_proba(X_new[-1].reshape(1, -1))[0,1]
 
   #Predecimos la probabilidad de cancelación de la nueva reserva
-  st.write(f"Su probabilidad de cancelación es de: {(float(prob), 2)}")
+  st.write(f"Su probabilidad de cancelación es de: {float(prob)}")
   return prob
 
 #Función para simular nuevas reservas aleatorias
