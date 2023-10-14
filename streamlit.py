@@ -227,7 +227,7 @@ if st.button('Reserva'):
 
           #Última habitación si sobran adultos
           if adultos > 0:
-        cont += 1
+            cont += 1
         #Si no sobran adultos pero sí un niño, asignaremos una habitación extra
         elif niños % 2 == 1:
           cont += 1
