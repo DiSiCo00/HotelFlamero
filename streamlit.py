@@ -368,40 +368,39 @@ def new_Booking_fecha_reserva():
     'Antelacion': (fecha_entrada-fecha_reserva).days
   }
 
-
-
   return obj
 
-#Fecha cancelación
-def cancel_date(obj,model=random_forest,model_canc=random_forest_canc):
-  columnas_canc_X=['Noches','Tip.Hab.Fra.','Régimen factura', 'AD', 'NI','CU','Horario venta',
-            'Precio alojamiento','Precio desayuno', 'Precio almuerzo', 'Precio cena',
-            'Cantidad Habitaciones','Mes Entrada','Mes Venta','Antelacion']
-  #Dividimos en X e y
+#Función para predecir la fecha de cancelación de la reserva
+def cancel_date(obj: dict,model_canc=random_forest_canc, fecha_actual=date.today()):
+  #Definimos las variables que usaremos en el modelo
+  columnas_canc_X = ['Noches', 'Tip.Hab.Fra.', 'Régimen factura', 'AD', 'NI', 'CU', 'Horario venta', 'Precio alojamiento', 'Precio desayuno',
+                   'Precio almuerzo', 'Precio cena', 'Cantidad Habitaciones', 'Mes Entrada', 'Mes Venta', 'Antelacion']
+  #Tomamos nuestra base de entrenamiento para realizar el proceso de normalización y One Hot Encoding
   _sample = cancelaciones[columnas_canc_X]
 
+  #Añadimos la nueva reserva a los datos
   X_new =pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
-  X_new =  pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
+  X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
 
+  #Aplicamos el escalador robusto
   robust_scaler = RobustScaler()
   X_new[["Precio alojamiento", "Antelacion"]] = robust_scaler.fit_transform(X_new[["Precio alojamiento", "Antelacion"]])
 
-
-  # Aplicamos la normalización
+  # Aplicamos la normalización Min Max
   X_norm = MinMaxScaler().fit_transform(X_new)
 
+  #Predecimos el score con el modelo
   _score = model_canc.predict(X_norm[-1].reshape(1, -1))
-  pred=predict_model(model,obj)
-  _days = float(_score)*obj["Antelacion"]
 
-  # Obtener la fecha actual del sistema
-  fecha_actual = date.today()
+  #Obtenemos los días que pasarán hasta la cancelación
+  _days = float(_score) * obj["Antelacion"]
 
-  # Sumar días a la fecha actual
+  #Sumamos los días a la fecha actual
   cancel_date = fecha_actual + timedelta(_days)
 
+  print(f"La reserva se podría cancelar el día {cancel_date}")
   return cancel_date
-
+    
 cancel_date(new_Booking_fecha_reserva())
