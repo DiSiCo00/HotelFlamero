@@ -262,10 +262,7 @@ def new_Booking():
 
   while (num_habitaciones == 0):
       st.write('''La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación''')
-      room_type = st.radio('Seleccione un tipo de habitación de entre los siguientes:',
-                ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'])
-      num_habitaciones = habitaciones(adultos, niños, room_type)
-
+  st.write('''Usted va a reservar {num_habitaciones} habitaciones''')
   regimen=st.radio('Seleccione un régimen de entre los siguientes:',
                   ['MPA', 'MPC','PC', 'HD', 'SA'])
 
