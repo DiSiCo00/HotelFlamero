@@ -7,16 +7,12 @@ Original file is located at
     https://colab.research.google.com/drive/1hyOvsFySs9GuN2faampt6ddyLw9z1NJA
 """
 
-#!pip install streamlit
-
 #Importamos las librerías
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta, date
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
-
-import random
 
 import joblib
 
