@@ -66,8 +66,10 @@ def predict_model(obj,model=random_forest):
   #Tomamos nuestra base de entrenamiento para realizar el proceso de normalización y One Hot Encoding
   _sample = reservas_total[columnas_X]
 
+  
+    
   # Añadimos la nueva reserva a los datos
-  X_new = pd.concat([_sample, pd.DataFrame(obj[columnas_X],index=[0])], ignore_index=True)
+  X_new = pd.concat([_sample, obj[columnas_X]], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
