@@ -39,6 +39,10 @@ st.write("""
 ## REALIZA TU RESERVA AHORA
 """)
 
+hoy=st.date_input('¿Qué día es hoy?',
+            min_value=pd.to_datetime(datetime.now()),
+            max_value=pd.to_datetime('1/6/2024',dayfirst=True))
+
 # Recuperamos el modelo del random forest
 random_forest = joblib.load("random_forest.pkl")
 
@@ -66,10 +70,8 @@ def predict_model(obj,model=random_forest):
   #Tomamos nuestra base de entrenamiento para realizar el proceso de normalización y One Hot Encoding
   _sample = reservas_total[columnas_X]
 
-  
-    
   # Añadimos la nueva reserva a los datos
-  X_new = pd.concat([_sample, obj[columnas_X]], ignore_index=True)
+  X_new = pd.concat([_sample, pd.DataFrame(obj),index=[0]], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -235,8 +237,7 @@ def habitaciones(adultos, niños, tipo_habitacion):
 #Función para crear nuevas reservas
 def new_Booking():
   reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
-
-
+    
   fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
                 value=pd.to_datetime('1/6/2024', dayfirst=True),
                 min_value=pd.to_datetime('1/6/2024', dayfirst=True),
@@ -297,79 +298,7 @@ def new_Booking():
     "Cantidad Habitaciones": num_habitaciones,
     'Mes Entrada' : fecha_entrada.strftime('%B'),
     'Mes Venta': datetime.now().strftime('%B'),
-    'Antelacion': (fecha_entrada-pd.to_datetime(datetime.now())).days
-  }
-
-#Función para crear nuevas reservas
-def new_Booking_fecha_reserva():
-  reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
-
-  fecha_reserva=st.date_input('¿Qué día es hoy?',
-                min_value=pd.to_datetime(datetime.now()),
-                max_value=pd.to_datetime('1/6/2024',dayfirst=True))
-
-  fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
-                value=pd.to_datetime('1/6/2024', dayfirst=True),
-                min_value=pd.to_datetime('1/6/2024', dayfirst=True),
-                max_value=pd.to_datetime('30/9/2024',dayfirst=True))
-
-  noches=int(st.number_input('Seleccione la cantidad de noches:',min_value=1))
-
-  print('Seleccione el número de adultos: \t')
-  adultos=int(st.number_input('Seleccione el número de adultos:',min_value=1))
-
-  print('Seleccione el número de niños: \t')
-  niños=int(st.number_input('Seleccione el número de niños:',min_value=1))
-
-  print('Seleccione el número de cunas: \t')
-  cunas=int(st.number_input('Seleccione el número de cunas:',min_value=1))
-
-  if niños>0:
-    room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
-                     ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'])
-  else:
-    room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
-                     ['DSC', 'DSM', 'DVC', 'EC', 'EM', 'SUITE'])
-
-  num_habitaciones=habitaciones(adultos,niños,room_type)
-
-  regimen=st.radio('Seleccione un régimen de entre los siguientes:',
-                  ['MPA', 'MPC','PC', 'HD', 'SA'])
-
-
-  hora = int(datetime.now().strftime('%H'))
-  if (0 <= hora < 6):
-    horario = 'Madrugada'
-  elif 6 <= hora < 12:
-    horario = 'Mañana'
-  elif 12 <= hora < 18:
-    horario = 'Tarde'
-  else:
-    horario = 'Noche'
-
-  precio_alojamiento=reservas_total['Precio alojamiento'].loc[reservas_total['Tip.Hab.Fra.'] == room_type].mean()
-  precio_desayuno=reservas_total['Precio desayuno'].loc[reservas_total['Régimen factura'] == regimen].mean()
-  precio_almuerzo=reservas_total['Precio almuerzo'].loc[reservas_total['Régimen factura'] == regimen].mean()
-  precio_cena= reservas_total['Precio cena'].loc[reservas_total['Régimen factura'] == regimen].mean()
-  precio_total=precio_alojamiento+precio_desayuno+precio_almuerzo+precio_cena
-
-  obj = {
-    "Hoy": fecha_reserva,
-    "Noches": noches,
-    "Tip.Hab.Fra." : room_type,
-    "Régimen factura": regimen,
-    "AD": adultos,
-    "NI":niños,
-    "CU":cunas,
-    'Horario venta': horario,
-    'Precio alojamiento': precio_alojamiento,
-    'Precio desayuno': precio_desayuno,
-    'Precio almuerzo': precio_almuerzo,
-    'Precio cena': precio_cena,
-    "Cantidad Habitaciones": num_habitaciones,
-    'Mes Entrada' : fecha_entrada.strftime('%B'),
-    'Mes Venta': datetime.now().strftime('%B'),
-    'Antelacion': (fecha_entrada-fecha_reserva).days
+    'Antelacion': (fecha_entrada-hoy).days
   }
 
   return obj
@@ -383,7 +312,7 @@ def cancel_date(obj: dict,model_canc=random_forest_canc):
   _sample = cancelaciones[columnas_canc_X]
 
   #Añadimos la nueva reserva a los datos
-  X_new =pd.concat([_sample, pd.DataFrame(obj[columnas_canc_X],index=[0])], ignore_index=True)
+  pd.concat([_sample, pd.DataFrame(obj),index=[0]]
 
   #One Hot Encoding de las variables categóricas
   X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -402,11 +331,11 @@ def cancel_date(obj: dict,model_canc=random_forest_canc):
   _days = float(_score) * obj["Antelacion"]
 
   #Sumamos los días a la fecha actual
-  cancel_date = obj['Hoy'] + timedelta(_days)
+  cancel_date = hoy + timedelta(_days)
 
   st.write(f"La reserva se podría cancelar el día {cancel_date}")
   return cancel_date
     
-booking_date=new_Booking_fecha_reserva() 
+booking_date=new_Booking() 
 predict_model(booking_date)
 cancel_date(booking_date)
