@@ -260,8 +260,8 @@ def new_Booking():
   #Calculamos el número de habitaciones con la función
   num_habitaciones = habitaciones(adultos, niños, room_type)
 
-  while (num_habitaciones == 0):
-      st.write('''La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación''')
+  if (num_habitaciones == 0):
+      return st.write('''La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación''')
   st.write('''Usted va a reservar {num_habitaciones} habitaciones''')
   regimen=st.radio('Seleccione un régimen de entre los siguientes:',
                   ['MPA', 'MPC','PC', 'HD', 'SA'])
