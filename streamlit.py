@@ -51,7 +51,7 @@ reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
 # Convertimos las columnas en formato de fecha
 reservas_total['Fecha entrada'] = pd.to_datetime(reservas_total['Fecha entrada'], dayfirst=True)
 reservas_total['Fecha venta'] = pd.to_datetime(reservas_total['Fecha venta'], dayfirst=True)
-reservas_total['Fecha Anulacion'] = pd.to_datetime(reservas_total['Fecha Anulacion'], dayfirst=True)
+reservas_total['Fecha Anulacion'] = pd.to_datetime(reservas_total['Fecha Anulacion'], dayfirst=True, format='mixed')
 
 #Leemos el csv para recuperar el dataframe
 cancelaciones=pd.read_csv('cancelaciones.csv')
