@@ -13,17 +13,7 @@ Original file is located at
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta, date
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-import sklearn.metrics as metrics
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.linear_model import LogisticRegression, Ridge
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, mean_squared_error
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
 
 import random
@@ -31,7 +21,7 @@ import random
 import joblib
 
 import warnings
-warnings.filterwarnings('ignore' )
+warnings.filterwarnings('ignore')
 
 #pd.set_option('mode.chained_assignment', None)
 if 1==1:#st.button('Reserva'):
@@ -89,45 +79,6 @@ if 1==1:#st.button('Reserva'):
       #Predecimos la probabilidad de cancelación de la nueva reserva
       st.write(f"Su probabilidad de cancelación es de: {float(prob)}")
       return prob
-
-    #Función para simular nuevas reservas aleatorias
-    def random_Booking():
-      #Elegimos un tipo de habitación y un régimen de nuestro dataset reservas_total al azar
-      room_type=random.choice(reservas_total['Tip.Hab.Fra.'].unique())
-      regimen=random.choice(reservas_total['Régimen factura'].unique())
-
-      #Fijamos la hora actual como la hora de reserva
-      hora = int(datetime.now().strftime('%H'))
-      if (0 <= hora < 6):
-        horario = 'Madrugada'
-      elif 6 <= hora < 12:
-        horario = 'Mañana'
-      elif 12 <= hora < 18:
-        horario = 'Tarde'
-      else:
-        horario = 'Noche'
-
-
-      #Definimos el objeto con todas las variables necesarias
-      obj = {
-        "Noches": random.choice(reservas_total['Noches'].unique()) ,
-        "Tip.Hab.Fra." : room_type ,
-        "Régimen factura":regimen,
-        "AD":random.choice(reservas_total['AD'].unique()),
-        "NI":random.choice(reservas_total['NI'].unique()),
-        "CU":random.choice(reservas_total['CU'].unique()),
-        'Horario venta': horario,
-        'Precio alojamiento': reservas_total['Precio alojamiento'].loc[reservas_total['Tip.Hab.Fra.'] == room_type].mean(),
-        'Precio desayuno': reservas_total['Precio desayuno'].loc[reservas_total['Régimen factura'] == regimen].mean(),
-        'Precio almuerzo': reservas_total['Precio almuerzo'].loc[reservas_total['Régimen factura'] == regimen].mean(),
-        'Precio cena': reservas_total['Precio cena'].loc[reservas_total['Régimen factura'] == regimen].mean(),
-        "Cantidad Habitaciones": int(reservas_total["Cantidad Habitaciones"].loc[reservas_total['Tip.Hab.Fra.'] == room_type].mean()),
-        'Mes Entrada' : random.choice(reservas_total["Mes Entrada"].unique()),
-        'Mes Venta': random.choice(reservas_total['Mes Venta'].unique()),
-        'Antelacion': 300
-      }
-
-      return obj
 
     #Función para definir la cantidad mínima de habitaciones a reservar en base a huespedes y tipo de habitación
     def habitaciones(adultos, niños, tipo_habitacion):
