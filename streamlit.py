@@ -255,7 +255,9 @@ if 1==1:#st.button('Reserva'):
       cunas=int(st.number_input('Seleccione el número de cunas:',min_value=0))
 
       room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
-                     ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'])
+                     ['DSC', 'DSM', 'DVC', 'DVM', 'EC', 'EM', 'IND', 'SUITE'],
+                     captions=['DOBLE SUPERIOR COTO','DOBLE SUPERIOR MAR','DELUXE VISTA COTO', 'DELUXE VISTA MAR', 'ESTUDIO COTO','ESTUDIO MAR','INDIVIDUAL','SUITE'],
+                     label_visibility='hidden')
 
       #Calculamos el número de habitaciones con la función
       num_habitaciones = habitaciones(adultos, niños, room_type)
