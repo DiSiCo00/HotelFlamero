@@ -311,7 +311,7 @@ def cancel_date(obj,model=random_forest,model_canc=random_forest_canc):
   #Dividimos en X e y
   _sample = cancelaciones[columnas_canc_X]
 
-  X_new =pd.concat([_sample, obj], ignore_index=True)
+  X_new =pd.concat([_sample, pd.DataFrame.from_dict(obj)], ignore_index=True)
 
   #One Hot Encoding de las variables categóricas
   X_new =  pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
