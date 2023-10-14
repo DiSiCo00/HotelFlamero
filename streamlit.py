@@ -261,8 +261,9 @@ def new_Booking():
   num_habitaciones = habitaciones(adultos, niños, room_type)
 
   if (num_habitaciones == 0):
-      return st.write('''La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación''')
-  st.write('''Usted va a reservar {num_habitaciones} habitaciones''')
+      st.write("La habitación no se adecúa a sus circunstancias. Seleccione otro tipo de habitación")
+      return 0
+  st.write(f"Usted va a reservar {num_habitaciones} habitaciones")
   regimen=st.radio('Seleccione un régimen de entre los siguientes:',
                   ['MPA', 'MPC','PC', 'HD', 'SA'])
 
@@ -336,6 +337,7 @@ def cancel_date(obj: dict,model_canc=random_forest_canc):
   st.write(f"La reserva se podría cancelar el día {cancel_date}")
   return cancel_date
     
-booking_date=new_Booking() 
-predict_model(booking_date)
-cancel_date(booking_date)
+booking_date=new_Booking()
+if booking_date != 0:
+    predict_model(booking_date)
+    cancel_date(booking_date)
