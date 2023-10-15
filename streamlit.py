@@ -90,7 +90,7 @@ if selected == 0:
             }
         ]
     )
-st.write(completion)
+    st.write(completion)
 
 
 if selected == 'Reserva':#st.button('Reserva'):
