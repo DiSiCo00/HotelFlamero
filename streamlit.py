@@ -368,8 +368,8 @@ if selected == 'Reseñas':
         translator = Translator(from_lang="es", to_lang="en")
         reseña = translator.translate(reseña)
 
-        palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed", "perfect", "elegant", "gentle", "delicious", "unforgettable", "cheap", "spectacular"]
-        palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible", "fucking", "disaster", "expensive"]
+        palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed", "perfect", "elegant", "gentle", "delicious", "unforgettable", "cheap", "spectacular", "highly"]
+        palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "suffered", "horrible", "fucking", "disaster", "expensive"]
         categoria_limpieza = ["clean","tidy", "dirt", "cleaner", "towels", "rat", "rats", "cockroach", "cockroachs", "cleaner", "cleaners"]
         categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking","facilities"]
         categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
