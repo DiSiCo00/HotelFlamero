@@ -374,7 +374,7 @@ if selected == 'Reseñas':
     categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
     categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
     categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
-    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance"]
+    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance", "receptionist", "waiters"]
     categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy", ""]
 
     def calcular_puntuacion_sentimiento(frase_ingles):
@@ -393,7 +393,7 @@ if selected == 'Reseñas':
         categorias = []
         for token in tokens:
             if token in categoria_ubicacion:
-                categorias.append('Ubicación')
+                categorias.append(['Ubicación')
             elif token in categoria_habitacion:
                 categorias.append('Habitación')
             elif token in categoria_limpieza:
@@ -404,6 +404,18 @@ if selected == 'Reseñas':
                 categorias.append('Atención al cliente')
             elif token in categoria_atencion:
                 categorias.append('Tranquilidad')
+              # Definir las categorías en las que deseas clasificar
+              categorias = ["Limpieza", "Confort", "Ubicación", "Instalaciones", "Personal"]
+
+              # Crear un clasificador de cero shot
+              classifier = pipeline("zero-shot-classification")
+
+              # Realizar la clasificación
+              resultados = classifier(c, categorias)
+
+              obj[resultados['labels'][0]].append(float(a))
+
+              obj
         return categorias
 
     puntuacion = calcular_puntuacion_sentimiento(reseña)
