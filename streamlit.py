@@ -370,13 +370,13 @@ if selected == 'Reseñas':
 
         palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed"]
         palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible"]
-        categoria_limpieza = ["clean","tidy", "dirt"]
-        categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
-        categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
+        categoria_limpieza = ["clean","tidy", "dirt", "cleaner", "towels", "rat", "rats", "cockroach", "cockroachs"]
+        categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking"]
+        categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
         categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
-        categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance", "receptionist", "waiters"]
+        categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "attendance", "receptionist", "waiters", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
         categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
-        categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch"]
+        categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch", "fruit", "fruits", "gastronomy", "hungry", "meat", "fish", "bread"]
 
         def calcular_puntuacion_sentimiento(frase_ingles):
             tokens = nltk.word_tokenize(frase_ingles)
@@ -388,15 +388,6 @@ if selected == 'Reseñas':
                     puntuacion_sentimiento -= 1
 
             return puntuacion_sentimiento
-        
-        # Definir las categorías en las que deseas clasificar
-        categorias = ["Location", "Bedroom", "Cleaning", "Facilities", "Customer Support", "Quietness", "Food"]
-
-        # Crear un clasificador de cero shot
-        classifier = pipeline("zero-shot-classification")
-
-        # Realizar la clasificación
-        resultados = classifier(reseña, categorias)
     
         def calcular_categoria_sentimiento(frase_ingles):
             tokens = nltk.word_tokenize(frase_ingles)
@@ -409,28 +400,27 @@ if selected == 'Reseñas':
             cuenta_comida = 0
         
             for token in tokens:
-                if token in categoria_ubicacion:
-                    cuenta_ubicacion+=1
-                elif token in categoria_habitacion:
-                    cuenta_habitacion+=1
-                elif token in categoria_limpieza:
-                    cuenta_limpieza+=1
-                elif token in categoria_instalaciones:
-                    cuenta_instalaciones+=1
-                elif token in categoria_atencion:
-                    cuenta_atencion+=1
-                elif token in categoria_tranquilidad:
-                    cuenta_tranquilidad+=1
-                elif token in categoria_tranquilidad:
-                    cuenta_comida+=1
-                
-                categorias = [['Ubicación',cuenta_ubicacion,resultados['scores'][0]],
-                              ['Habitación',cuenta_habitacion,resultados['scores'][1]],
-                              ['Limpieza',cuenta_limpieza,resultados['scores'][2]],
-                              ['Instalaciones',cuenta_instalaciones,resultados['scores'][3]],
-                              ['Atención al Cliente',cuenta_atencion,resultados['scores'][4]],
-                              ['Tranquilidad',cuenta_tranquilidad,resultados['scores'][5]],
-                              ['Comida',cuenta_comida,resultados['scores'][6]]]
+                if token in categoria_ubicacion and cuenta_ubicacion = 0:
+                    categorias.append('Ubicación')
+                    cuenta_ubicacion = 1
+                elif token in categoria_habitacion and cuenta_habitacion = 0:
+                    categorias.append('Habitación')
+                    cuenta_habitacion = 1
+                elif token in categoria_limpieza and cuenta_limpieza = 0:
+                    categorias.append('Limpieza')
+                    cuenta_limpieza = 1
+                elif token in categoria_instalaciones and cuenta_instalaciones = 0:
+                    categorias.append('Instalaciones')
+                    cuenta_instalaciones = 1
+                elif token in categoria_atencion and cuenta_atencion = 0:
+                    categorias.append('Atención al cliente')
+                    cuenta_atencion = 1
+                elif token in categoria_tranquilidad and cuenta_tranquilidad = 0:
+                    categorias.append('Tranquilidad')
+                    cuenta_tranquilidad = 1
+                elif token in categoria_comida and cuenta_comida = 0:
+                    categorias.append('Comida')
+                    cuenta_comida = 1
                           
             return categorias
 
@@ -451,6 +441,9 @@ if selected == 'Reseñas':
             st.write(f'Palabras negativas: {puntuacion}')
 
         st.write('La crítica trata los siguientes temas:')
-        for categoria in categorias:
-            st.write(f"{categoria[0]}: {categoria[1]} palabras relacionadas. Score: {categoria[2]}")
+        if len(categorias) == 0:
+            st.write('General')
+        else:
+            for categoria in categorias:
+                st.write(categoria)
     
