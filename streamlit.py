@@ -374,7 +374,7 @@ if selected == 'Reseñas':
         categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking","facilities"]
         categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
         categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
-        categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "careful", "attendance", "gentle", "helpful", "attentive", "receptionist", "waiter", "waiters", "cleaner", "cleaners", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
+        categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "careful", "attendance", "gentle", "charm", "helpful", "attentive", "receptionist", "waiter", "waiters", "cleaner", "cleaners", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
         categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
         categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch", "fruit", "fruits", "gastronomy", "hungry", "meat", "fish", "bread", "delicious"]
 
