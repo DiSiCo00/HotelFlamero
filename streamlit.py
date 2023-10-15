@@ -373,8 +373,8 @@ if selected == 'Reseñas':
     categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
     categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
     categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
-    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help"]
-    categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
+    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance"]
+    categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy", ""]
 
     def calcular_puntuacion_sentimiento(frase_ingles):
         tokens = nltk.word_tokenize(frase_ingles)
