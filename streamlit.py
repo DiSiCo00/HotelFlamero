@@ -207,13 +207,10 @@ if selected == 'Reserva':#st.button('Reserva'):
           return 0
       noches=int(st.number_input('Seleccione la cantidad de noches:',min_value=1))
 
-      print('Seleccione el número de adultos: \t')
       adultos=int(st.number_input('Seleccione el número de adultos:',min_value=1))
 
-      print('Seleccione el número de niños: \t')
       niños=int(st.number_input('Seleccione el número de niños:',min_value=0))
 
-      print('Seleccione el número de cunas: \t')
       cunas=int(st.number_input('Seleccione el número de cunas:',min_value=0))
 
       room_type=st.radio('Seleccione un tipo de habitación de entre los siguientes:',
