@@ -362,7 +362,7 @@ if selected == 'Reserva':#st.button('Reserva'):
 if selected == 'Reseñas':
 
     reseña=st.text_area('Reseña:')
-    if len(reseña != 0):
+    if len(reseña) != 0:
         sia = SentimentIntensityAnalyzer()
 
         translator = Translator(from_lang="es", to_lang="en")
