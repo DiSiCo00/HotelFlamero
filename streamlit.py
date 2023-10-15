@@ -391,6 +391,7 @@ if selected == 'Reseñas':
     
         def calcular_categoria_sentimiento(frase_ingles):
             tokens = nltk.word_tokenize(frase_ingles)
+            categorias=[]
             cuenta_ubicacion = 0
             cuenta_habitacion = 0
             cuenta_limpieza = 0
