@@ -387,20 +387,20 @@ if selected == 'Reseñas':
         return puntuacion_sentimiento
 
     def calcular_categoria_sentimiento(frase_ingles):
-    tokens = nltk.word_tokenize(frase_ingles)
-    categorias = []
-    for token in tokens:
-        if token in categoria_ubicacion:
-            categorias.append('Ubicación')
-        elif token in categoria_habitacion:
-            categorias.append('Habitación')
-        elif token in categoria_limpieza:
-            categorias.append('Limpieza')
-        elif token in categoria_instalaciones:
-            categorias.append('Instalaciones')
-        elif token in categoria_atencion:
-            categorias.append('Atención al cliente')
-    return categorias
+        tokens = nltk.word_tokenize(frase_ingles)
+        categorias = []
+        for token in tokens:
+            if token in categoria_ubicacion:
+                categorias.append('Ubicación')
+            elif token in categoria_habitacion:
+                categorias.append('Habitación')
+            elif token in categoria_limpieza:
+                categorias.append('Limpieza')
+            elif token in categoria_instalaciones:
+                categorias.append('Instalaciones')
+            elif token in categoria_atencion:
+                categorias.append('Atención al cliente')
+        return categorias
 
     puntuacion = calcular_puntuacion_sentimiento(reseña)
     sentimiento = sia.polarity_scores(reseña)
