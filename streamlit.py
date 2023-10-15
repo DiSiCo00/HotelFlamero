@@ -400,25 +400,25 @@ if selected == 'Reseñas':
             cuenta_comida = 0
         
             for token in tokens:
-                if token in categoria_ubicacion and cuenta_ubicacion = 0:
+                if token in categoria_ubicacion and cuenta_ubicacion == 0:
                     categorias.append('Ubicación')
                     cuenta_ubicacion = 1
-                elif token in categoria_habitacion and cuenta_habitacion = 0:
+                elif token in categoria_habitacion and cuenta_habitacion == 0:
                     categorias.append('Habitación')
                     cuenta_habitacion = 1
-                elif token in categoria_limpieza and cuenta_limpieza = 0:
+                elif token in categoria_limpieza and cuenta_limpieza == 0:
                     categorias.append('Limpieza')
                     cuenta_limpieza = 1
-                elif token in categoria_instalaciones and cuenta_instalaciones = 0:
+                elif token in categoria_instalaciones and cuenta_instalaciones == 0:
                     categorias.append('Instalaciones')
                     cuenta_instalaciones = 1
-                elif token in categoria_atencion and cuenta_atencion = 0:
+                elif token in categoria_atencion and cuenta_atencion == 0:
                     categorias.append('Atención al cliente')
                     cuenta_atencion = 1
-                elif token in categoria_tranquilidad and cuenta_tranquilidad = 0:
+                elif token in categoria_tranquilidad and cuenta_tranquilidad == 0:
                     categorias.append('Tranquilidad')
                     cuenta_tranquilidad = 1
-                elif token in categoria_comida and cuenta_comida = 0:
+                elif token in categoria_comida and cuenta_comida == 0:
                     categorias.append('Comida')
                     cuenta_comida = 1
                           
