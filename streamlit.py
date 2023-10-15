@@ -362,95 +362,96 @@ if selected == 'Reserva':#st.button('Reserva'):
 if selected == 'Reseñas':
 
     reseña=st.text_area('Reseña:')
+    if len(reseña != 0):
+        sia = SentimentIntensityAnalyzer()
 
-    sia = SentimentIntensityAnalyzer()
+        translator = Translator(from_lang="es", to_lang="en")
+        reseña = translator.translate(reseña)
 
-    translator = Translator(from_lang="es", to_lang="en")
-    reseña = translator.translate(reseña)
+        palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed"]
+        palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible"]
+        categoria_limpieza = ["clean","tidy", "dirt"]
+        categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
+        categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
+        categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
+        categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance", "receptionist", "waiters"]
+        categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
+        categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch"]
 
-    palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed"]
-    palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible"]
-    categoria_limpieza = ["clean","tidy", "dirt"]
-    categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
-    categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
-    categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
-    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "attendance", "receptionist", "waiters"]
-    categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
-    categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch"]
+        def calcular_puntuacion_sentimiento(frase_ingles):
+            tokens = nltk.word_tokenize(frase_ingles)
+            puntuacion_sentimiento = 0
+            for token in tokens:
+                if token in palabras_positivas:
+                    puntuacion_sentimiento += 1
+                elif token in palabras_negativas:
+                    puntuacion_sentimiento -= 1
 
-    def calcular_puntuacion_sentimiento(frase_ingles):
-        tokens = nltk.word_tokenize(frase_ingles)
-        puntuacion_sentimiento = 0
-        for token in tokens:
-            if token in palabras_positivas:
-                puntuacion_sentimiento += 1
-            elif token in palabras_negativas:
-                puntuacion_sentimiento -= 1
-
-        return puntuacion_sentimiento
+            return puntuacion_sentimiento
         
-    # Definir las categorías en las que deseas clasificar
-    categorias = ["Location", "Bedroom", "Cleaning", "Facilities", "Customer Support", "Quietness", "Food"]
+        # Definir las categorías en las que deseas clasificar
+        categorias = ["Location", "Bedroom", "Cleaning", "Facilities", "Customer Support", "Quietness", "Food"]
 
-    # Crear un clasificador de cero shot
-    classifier = pipeline("zero-shot-classification")
+        # Crear un clasificador de cero shot
+        classifier = pipeline("zero-shot-classification")
 
-    # Realizar la clasificación
-    resultados = classifier(reseña, categorias)
-    resultados
+        # Realizar la clasificación
+        resultados = classifier(reseña, categorias)
+        resultados
     
-    def calcular_categoria_sentimiento(frase_ingles):
-        tokens = nltk.word_tokenize(frase_ingles)
-        cuenta_ubicacion = 0
-        cuenta_habitacion = 0
-        cuenta_limpieza = 0
-        cuenta_instalaciones = 0
-        cuenta_atencion = 0
-        cuenta_tranquilidad = 0
-        cuenta_comida = 0
+        def calcular_categoria_sentimiento(frase_ingles):
+            tokens = nltk.word_tokenize(frase_ingles)
+            cuenta_ubicacion = 0
+            cuenta_habitacion = 0
+            cuenta_limpieza = 0
+            cuenta_instalaciones = 0
+            cuenta_atencion = 0
+            cuenta_tranquilidad = 0
+            cuenta_comida = 0
         
-        for token in tokens:
-            if token in categoria_ubicacion:
-                cuenta_ubicacion+=1
-            elif token in categoria_habitacion:
-                cuenta_habitacion+=1
-            elif token in categoria_limpieza:
-                cuenta_limpieza+=1
-            elif token in categoria_instalaciones:
-                cuenta_instalaciones+=1
-            elif token in categoria_atencion:
-                cuenta_atencion+=1
-            elif token in categoria_tranquilidad:
-                cuenta_tranquilidad+=1
-            elif token in categoria_tranquilidad:
-                cuenta_comida+=1
+            for token in tokens:
+                if token in categoria_ubicacion:
+                    cuenta_ubicacion+=1
+                elif token in categoria_habitacion:
+                    cuenta_habitacion+=1
+                elif token in categoria_limpieza:
+                    cuenta_limpieza+=1
+                elif token in categoria_instalaciones:
+                    cuenta_instalaciones+=1
+                elif token in categoria_atencion:
+                    cuenta_atencion+=1
+                elif token in categoria_tranquilidad:
+                    cuenta_tranquilidad+=1
+                elif token in categoria_tranquilidad:
+                    cuenta_comida+=1
                 
-            categorias = [['Ubicación',cuenta_ubicacion,resultados['scores'][0]],
-                          ['Habitación',cuenta_habitacion,resultados['scores'][1]],
-                          ['Limpieza',cuenta_limpieza,resultados['scores'][2]],
-                          ['Instalaciones',cuenta_instalaciones,resultados['scores'][3]],
-                          ['Atención al Cliente',cuenta_atencion,resultados['scores'][4]],
-                          ['Tranquilidad',cuenta_tranquilidad,resultados['scores'][5]],
-                          ['Comida',cuenta_comida,resultados['scores'][6]]]
+                categorias = [['Ubicación',cuenta_ubicacion,resultados['scores'][0]],
+                              ['Habitación',cuenta_habitacion,resultados['scores'][1]],
+                              ['Limpieza',cuenta_limpieza,resultados['scores'][2]],
+                              ['Instalaciones',cuenta_instalaciones,resultados['scores'][3]],
+                              ['Atención al Cliente',cuenta_atencion,resultados['scores'][4]],
+                              ['Tranquilidad',cuenta_tranquilidad,resultados['scores'][5]],
+                              ['Comida',cuenta_comida,resultados['scores'][6]]]
                           
-        return categorias
+            return categorias
 
-    puntuacion = calcular_puntuacion_sentimiento(reseña)
-    sentimiento = sia.polarity_scores(reseña)
-    categorias = calcular_categoria_sentimiento(reseña)
+        puntuacion = calcular_puntuacion_sentimiento(reseña)
+        sentimiento = sia.polarity_scores(reseña)
+        categorias = calcular_categoria_sentimiento(reseña)
 
-    if sentimiento['compound'] >= 0.05:
-        st.write(f"Opinión positiva. Score: {sentimiento['compound']}")
-    elif sentimiento['compound'] <= -0.05:
-        st.write(f"Opinión negativa. Score: {sentimiento['compound']}")
-    else:
-        st.write(f"Opinión neutra. Score: {sentimiento['compound']}")
+        if sentimiento['compound'] >= 0.05:
+            st.write(f"Opinión positiva. Score: {sentimiento['compound']}")
+        elif sentimiento['compound'] <= -0.05:
+            st.write(f"Opinión negativa. Score: {sentimiento['compound']}")
+        else:
+            st.write(f"Opinión neutra. Score: {sentimiento['compound']}")
     
-    if puntuacion > 0:
-        st.write(f'Palabras positivas: {puntuacion}')
-    elif puntuacion < 0:
-        st.write(f'Palabras negativas: {puntuacion}')
+        if puntuacion > 0:
+            st.write(f'Palabras positivas: {puntuacion}')
+        elif puntuacion < 0:
+            st.write(f'Palabras negativas: {puntuacion}')
 
-    st.write('La crítica trata los siguientes temas:')
-    for categoria in categorias:
-        st.write(f"{categoria[0]}: {categoria[1]} palabras relacionadas. Score: {categoria[2]}")
+        st.write('La crítica trata los siguientes temas:')
+        for categoria in categorias:
+            st.write(f"{categoria[0]}: {categoria[1]} palabras relacionadas. Score: {categoria[2]}")
+    
