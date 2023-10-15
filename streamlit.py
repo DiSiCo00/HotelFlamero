@@ -397,7 +397,6 @@ if selected == 'Reseñas':
 
         # Realizar la clasificación
         resultados = classifier(reseña, categorias)
-        resultados
     
         def calcular_categoria_sentimiento(frase_ingles):
             tokens = nltk.word_tokenize(frase_ingles)
