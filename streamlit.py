@@ -320,7 +320,7 @@ if selected == 'Reserva':#st.button('Reserva'):
         'Precio cena': precio_cena,
         "Cantidad Habitaciones": num_habitaciones,
         'Mes Entrada' : fecha_entrada.strftime('%B'),
-        'Mes Venta': datetime.now().strftime('%B'),
+        'Mes Venta': hoy.strftime('%B'),
         'Antelacion': (fecha_entrada-hoy).days
       }
 
@@ -350,14 +350,8 @@ if selected == 'Reserva':#st.button('Reserva'):
       #Predecimos el score con el modelo
       _score = model_canc.predict(X_norm[-1].reshape(1, -1))
 
-      #Obtenemos los días que pasarán hasta la cancelación
-      _days = float(_score) * obj["Antelacion"]
-
-      #Sumamos los días a la fecha actual
-      cancel_date = hoy + timedelta(_days)
-
-      st.write(f"La reserva se podría cancelar el día {cancel_date}")
-      return cancel_date
+      st.write(f"La reserva tiene un score de fecha de cancelación de: {_score}")
+      return _score
 
     booking_date=new_Booking()
     if booking_date != 0:
@@ -373,9 +367,13 @@ if selected == 'Reseñas':
     translator = Translator(from_lang="es", to_lang="en")
     reseña = translator.translate(reseña)
 
-    palabras_positivas = ["good","happy","big","recommend","nice"]
-    palabras_negativas = ["old","small","uncomfortable","bad","slow"]
-
+    palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed"]
+    palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible"]
+    categoria_limpieza = ["clean","tidy", "dirt"]
+    categoria_instalaciones = ["pool","elevator","buffet", "lobby"]
+    categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
+    categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
+    categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help"]
 
     def calcular_puntuacion_sentimiento(frase_ingles):
         tokens = nltk.word_tokenize(frase_ingles)
@@ -388,9 +386,25 @@ if selected == 'Reseñas':
 
         return puntuacion_sentimiento
 
+    def calcular_categoria_sentimiento(frase_ingles):
+    tokens = nltk.word_tokenize(frase_ingles)
+    categorias = []
+    for token in tokens:
+        if token in categoria_ubicacion:
+            categorias.append('Ubicación')
+        elif token in categoria_habitacion:
+            categorias.append('Habitación')
+        elif token in categoria_limpieza:
+            categorias.append('Limpieza')
+        elif token in categoria_instalaciones:
+            categorias.append('Instalaciones')
+        elif token in categoria_atencion:
+            categorias.append('Atención al cliente')
+    return categorias
 
     puntuacion = calcular_puntuacion_sentimiento(reseña)
     sentimiento = sia.polarity_scores(reseña)
+    categorias = calcular_categoria_sentimiento(reseña)
     
     if sentimiento['compound'] >= 0.05:
         st.write(f"Opinión positiva. Score: {sentimiento['compound']}")
@@ -403,3 +417,10 @@ if selected == 'Reseñas':
         st.write(f'Palabras positivas: {puntuacion}')
     elif puntuacion < 0:
         st.write(f'Palabras negativas: {puntuacion}')
+
+    st.write('La crítica trata los siguientes temas')
+    if len(categorias) == 0:
+        st.write('General')
+    else:
+        for categoria in categorias:
+            st.write(categoria)
