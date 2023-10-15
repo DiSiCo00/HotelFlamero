@@ -439,7 +439,7 @@ if selected == 'Reseñas':
         if puntuacion > 0:
             st.write(f'Palabras positivas: {puntuacion}')
         elif puntuacion < 0:
-            st.write(f'Palabras negativas: {puntuacion}')
+            st.write(f'Palabras negativas: {-puntuacion}')
 
         st.write('La crítica trata los siguientes temas:')
         if len(categorias) == 0:
