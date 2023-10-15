@@ -3,5 +3,4 @@ streamlit-option-menu
 nltk
 translate
 openai
-os
 requests
