@@ -374,6 +374,7 @@ if selected == 'Reseñas':
     categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels"]
     categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
     categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help"]
+    categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
 
     def calcular_puntuacion_sentimiento(frase_ingles):
         tokens = nltk.word_tokenize(frase_ingles)
@@ -400,6 +401,8 @@ if selected == 'Reseñas':
                 categorias.append('Instalaciones')
             elif token in categoria_atencion:
                 categorias.append('Atención al cliente')
+            elif token in categoria_atencion:
+                categorias.append('Tranquilidad')
         return categorias
 
     puntuacion = calcular_puntuacion_sentimiento(reseña)
@@ -418,7 +421,7 @@ if selected == 'Reseñas':
     elif puntuacion < 0:
         st.write(f'Palabras negativas: {puntuacion}')
 
-    st.write('La crítica trata los siguientes temas')
+    st.write('La crítica trata los siguientes temas:')
     if len(categorias) == 0:
         st.write('General')
     else:
