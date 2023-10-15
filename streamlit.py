@@ -330,16 +330,16 @@ if selected == 'Reseñas':
 
 
     puntuacion = calcular_puntuacion_sentimiento(reseña)
-    if puntuacion > 0:
-        st.write(f'Opinión positiva. Palabras positivas: {puntuacion}')
-    elif puntuacion < 0:
-        st.write(f'Opinión negativa. Palabras negativas: {puntuacion}')
-    else:
-        sentimiento = sia.polarity_scores(reseña)
-
-        if sentimiento['compound'] >= 0.05:
+    sentimiento = sia.polarity_scores(reseña)
+    
+    if sentimiento['compound'] >= 0.05:
             st.write(f"Opinión positiva. Score: {sentimiento['compound']}")
         elif sentimiento['compound'] <= -0.05:
             st.write(f"Opinión negativa. Score: {sentimiento['compound']}")
         else:
             st.write(f"Opinión neutra. Score: {sentimiento['compound']}")
+    
+    if puntuacion > 0:
+        st.write(f'Palabras positivas: {puntuacion}')
+    elif puntuacion < 0:
+        st.write(f'Palabras negativas: {puntuacion}')
