@@ -371,7 +371,7 @@ if selected == 'Reseñas':
         palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed"]
         palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "not enjoyed", "horrible", "fucking"]
         categoria_limpieza = ["clean","tidy", "dirt", "cleaner", "towels", "rat", "rats", "cockroach", "cockroachs", "cleaner", "cleaners"]
-        categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking"]
+        categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking","facilities"]
         categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
         categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
         categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "attendance", "receptionist", "waiter", "waiters", "cleaner", "cleaners", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
