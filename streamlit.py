@@ -19,6 +19,16 @@ from streamlit_option_menu import option_menu
 import warnings
 warnings.filterwarnings('ignore')
 
+import nltk
+from translate import Translator
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nltk import sentiment
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+
+nltk.download('vader_lexicon')
+nltk.download('punkt')
+
 with st.sidebar:
     selected = option_menu('Menu', ['Reserva','Chatbot','Reseñas'])
 
@@ -291,8 +301,47 @@ if selected == 'Reserva':#st.button('Reserva'):
 
       st.write(f"La reserva se podría cancelar el día {cancel_date}")
       return cancel_date
-    
-    booking_date=new_Booking()
+        
     if booking_date != 0:
         predict_model(booking_date)
         cancel_date(booking_date)
+        
+if selected == 'Reseñas':
+
+    reseña=st.text_area('Reseña:')
+
+    sia = SentimentIntensityAnalyzer()
+
+    translator = Translator(from_lang="es", to_lang="en")
+    reseña = translator.translate(reseña)
+
+    palabras_positivas = ["good","happy","big","recommend","nice"]
+    palabras_negativas = ["old","small","uncomfortable","bad","slow"]
+
+
+    def calcular_puntuacion_sentimiento(frase_ingles):
+        tokens = nltk.word_tokenize(frase_ingles)
+        puntuacion_sentimiento = 0
+        for token in tokens:
+            if token in palabras_positivas:
+                puntuacion_sentimiento += 1
+            elif token in palabras_negativas:
+                puntuacion_sentimiento -= 1
+
+        return puntuacion_sentimiento
+
+
+    puntuacion = calcular_puntuacion_sentimiento(reseña)
+    if puntuacion > 0:
+        st.write('Opinión positiva. Palabras positivas: {puntuacion}')
+    elif puntuacion < 0:
+        st.write('Opinión negativa. Palabras negativas: {puntuacion}')
+    else:
+        sentimiento = sia.polarity_scores(reseña)
+
+        if sentimiento['compound'] >= 0.05:
+            st.write('Opinión positiva. Score: {sentimiento['compound']}')
+        elif sentimiento['compound'] <= -0.05:
+            st.write('Opinión negativa. Score: {sentimiento['compound']}')
+        else:
+            st.write('Opinión neutra. Score: {sentimiento['compound']}')
