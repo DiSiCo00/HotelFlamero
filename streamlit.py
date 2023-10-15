@@ -298,7 +298,8 @@ if selected == 'Reserva':#st.button('Reserva'):
 
       st.write(f"La reserva se podría cancelar el día {cancel_date}")
       return cancel_date
-        
+
+    booking_date=new_booking()
     if booking_date != 0:
         predict_model(booking_date)
         cancel_date(booking_date)
