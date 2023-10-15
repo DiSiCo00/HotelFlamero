@@ -452,6 +452,5 @@ if selected == 'Reseñas':
         st.write(f'Palabras negativas: {puntuacion}')
 
     st.write('La crítica trata los siguientes temas:')
-    else:
-        for categoria in categorias:
-            st.write(f"{categoria[0]}: {categoria[1]} palabras relacionadas. Score: {categoria[2]}")
+    for categoria in categorias:
+        st.write(f"{categoria[0]}: {categoria[1]} palabras relacionadas. Score: {categoria[2]}")
