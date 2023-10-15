@@ -4,4 +4,3 @@ nltk
 translate
 openai==0.27.8
 requests
-Environment
