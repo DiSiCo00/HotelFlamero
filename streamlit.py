@@ -368,8 +368,7 @@ if selected == 'Reseñas':
         translator = Translator(from_lang="es", to_lang="en")
         reseña = translator.translate(reseña)
 
-        palabras_positivas = ["good","happy","big","recommend","nice","great", "excellent", "enjoy", "enjoyed", "perfect", "elegant", "gentle", "delicious", "unforgettable", "cheap", "spectacular", "highly"]
-        palabras_negativas = ["old","small","uncomfortable","bad","slow", "shit", "suffered", "horrible", "fucking", "disaster", "expensive"]
+
         categoria_limpieza = ["clean","tidy", "dirt", "cleaner", "towels", "rat", "rats", "cockroach", "cockroachs", "cleaner", "cleaners"]
         categoria_instalaciones = ["pool","elevator","buffet", "lobby", "gym", "door", "doors", "water", "parking","facilities"]
         categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
@@ -377,17 +376,7 @@ if selected == 'Reseñas':
         categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "careful", "attendance", "gentle", "charm", "helpful", "attentive", "receptionist", "waiter", "waiters", "cleaner", "cleaners", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
         categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
         categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch", "fruit", "fruits", "gastronomy", "hungry", "meat", "fish", "bread", "delicious"]
-
-        def calcular_puntuacion_sentimiento(frase_ingles):
-            tokens = nltk.word_tokenize(frase_ingles)
-            puntuacion_sentimiento = 0
-            for token in tokens:
-                if token in palabras_positivas:
-                    puntuacion_sentimiento += 1
-                elif token in palabras_negativas:
-                    puntuacion_sentimiento -= 1
-
-            return puntuacion_sentimiento
+        categoria_precio = ["cheap", "expensive", "money", "savings", "economic"]
     
         def calcular_categoria_sentimiento(frase_ingles):
             tokens = nltk.word_tokenize(frase_ingles)
@@ -399,6 +388,7 @@ if selected == 'Reseñas':
             cuenta_atencion = 0
             cuenta_tranquilidad = 0
             cuenta_comida = 0
+            cuenta_precio = 0 
         
             for token in tokens:
                 if token in categoria_ubicacion and cuenta_ubicacion == 0:
@@ -422,10 +412,12 @@ if selected == 'Reseñas':
                 elif token in categoria_comida and cuenta_comida == 0:
                     categorias.append('Comida')
                     cuenta_comida = 1
-                          
+                elif token in categoria_precio and cuenta_precio == 0:
+                    categorias.append('Precio')
+                    cuenta_precio = 1
+                    
             return categorias
 
-        puntuacion = calcular_puntuacion_sentimiento(reseña)
         sentimiento = sia.polarity_scores(reseña)
         categorias = calcular_categoria_sentimiento(reseña)
 
@@ -435,11 +427,6 @@ if selected == 'Reseñas':
             st.write(f"Opinión negativa. Score: {sentimiento['compound']}")
         else:
             st.write(f"Opinión neutra. Score: {sentimiento['compound']}")
-    
-        if puntuacion > 0:
-            st.write(f'Palabras positivas: {puntuacion}')
-        elif puntuacion < 0:
-            st.write(f'Palabras negativas: {-puntuacion}')
 
         st.write('La crítica trata los siguientes temas:')
         if len(categorias) == 0:
