@@ -367,12 +367,12 @@ if selected == 'Reserva':#st.button('Reserva'):
                   _pred = predict_model(_obj, model)
 
                   if _pred < _umbral_inferior:
-                    print("La nueva reserva tiene bajo riesgo de cancelación. Cancelación gratuita. ")
+                    st.write("La nueva reserva tiene bajo riesgo de cancelación. Cancelación gratuita.")
                   elif _pred > _umbral_superior:
-                    print(f"Alto Riesgo de cancelación. Aplicar {(_cuota_maxima)*100:.1f}% del Precio total.")
+                    st.write(f"Alto Riesgo de cancelación. Aplicar {(_cuota_maxima)*100:.1f}% del Precio total.")
                     cancel_date(_obj, model_canc)
                   else:
-                    print(f"Riesgo Moderado. Aplicar el {float((_cuota_media)*100):.1f}% del precio total. \n")
+                    st.write(f"Riesgo Moderado. Aplicar el {float((_cuota_media)*100):.1f}% del precio total. \n")
                     cancel_date(_obj, model_canc)
                 else:
                   raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
