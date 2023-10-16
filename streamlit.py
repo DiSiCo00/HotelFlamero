@@ -386,7 +386,7 @@ if selected == 'Reserva':#st.button('Reserva'):
           raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
     
     booking=new_Booking()
-    if booking_date != 0:
+    if booking != 0:
         func_no_reembolso(booking)
         
         
