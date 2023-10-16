@@ -351,13 +351,44 @@ if selected == 'Reserva':#st.button('Reserva'):
       #Predecimos el score con el modelo
       _score = model_canc.predict(X_norm[-1].reshape(1, -1))
 
-      st.write(f"La reserva tiene un score de fecha de cancelación de: {_score}")
+      if _score < 0.5:
+          st.write(f"¡¡Aviso de posible cancelación tardía!!")
       return _score
 
-    booking_date=new_Booking()
+    #Función cuota no reembolsable
+    def func_no_reembolso(_obj, _cuota_media=0.25, _cuota_maxima=0.5, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
+
+        if 0 <= _cuota_maxima <= 1:
+          if 0 <= _cuota_media <= 1:
+            if 0 <= _umbral_inferior <= 1:
+              if 0 <= _umbral_superior <= 1:
+                if _umbral_superior >_umbral_inferior:
+
+                  _pred = predict_model(_obj, model)
+
+                  if _pred < _umbral_inferior:
+                    print("La nueva reserva tiene bajo riesgo de cancelación. Cancelación gratuita. ")
+                  elif _pred > _umbral_superior:
+                    print(f"Alto Riesgo de cancelación. Aplicar {(_cuota_maxima)*100:.1f}% del Precio total.")
+                    cancel_date(_obj, model_canc)
+                  else:
+                    print(f"Riesgo Moderado. Aplicar el {float((_cuota_media)*100):.1f}% del precio total. \n")
+                    cancel_date(_obj, model_canc)
+                else:
+                  raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
+              else:
+                raise ValueError("El valor ´umbral_superior´ debe estar entre 0 y 1.")
+            else:
+              raise ValueError("El valor ´umbral_inferior´ debe estar entre 0 y 1.")
+          else:
+             raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
+        else:
+          raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
+    
+    booking=new_Booking()
     if booking_date != 0:
-        predict_model(booking_date)
-        cancel_date(booking_date)
+        func_no_reembolso(booking)
+        
         
 if selected == 'Reseñas':
 
