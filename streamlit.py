@@ -31,11 +31,11 @@ nltk.download('vader_lexicon')
 nltk.download('punkt')
 
 with st.sidebar:
-    selected = option_menu('Menu', ['Chatbot','Reserva','Reseñas'])
+    selected = option_menu('Menu', ['Reserva','Reseñas','Chatbot'])
 
 #pd.set_option('mode.chained_assignment', None)
 
-if selected == 'Chatbot':
+if selected == 0:
     openai.api_type = "azure"
 
     # Azure OpenAI on your own data is only supported by the 2023-08-01-preview API version
