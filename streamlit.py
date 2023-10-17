@@ -259,8 +259,8 @@ if selected == 'Reserva':#st.button('Reserva'):
       reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
     
       fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
-                value=pd.to_datetime('1/6/2024', dayfirst=True),
-                min_value=pd.to_datetime('1/6/2024', dayfirst=True),
+                value=pd.to_datetime('16/6/2024', dayfirst=True),
+                min_value=pd.to_datetime('16/6/2024', dayfirst=True),
                 max_value=pd.to_datetime('30/9/2024',dayfirst=True))
       if (fecha_entrada<hoy):
           st.write('Introduzca una fecha de entrada posterior al día de hoy')
