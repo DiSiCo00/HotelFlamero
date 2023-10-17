@@ -43,7 +43,7 @@ if selected == 'Chatbot':
 
     # Azure OpenAI setup
     openai.api_base = "https://chatbotflamero.openai.azure.com" # Add your endpoint here
-    openai.api_key = os.getenv("ff4e5db40bb04cdca3e4d62afa342369") # Add your OpenAI API key here
+    openai.api_key ="ff4e5db40bb04cdca3e4d62afa342369" # Add your OpenAI API key here
     deployment_id = "chatbot_flamero" # Add your deployment ID here
     # Azure Cognitive Search setup
     search_endpoint = "https://chatbotflamero.search.windows.net"; # Add your Azure Cognitive Search endpoint here
