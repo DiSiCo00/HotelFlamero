@@ -39,7 +39,7 @@ if selected == 'Chatbot':
     openai.api_type = "azure"
 
     # Azure OpenAI on your own data is only supported by the 2023-08-01-preview API version
-    openai.api_version = "2023-07-01-preview"
+    openai.api_version = "2023-08-01-preview"
 
     # Azure OpenAI setup
     openai.api_base = "https://chatbotflamero.openai.azure.com/openai/deployments/chatflamero/extensions/chat/completions?api-version=2023-07-01-preview" # Add your endpoint here
