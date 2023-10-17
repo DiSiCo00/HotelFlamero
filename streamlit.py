@@ -35,7 +35,7 @@ with st.sidebar:
 
 #pd.set_option('mode.chained_assignment', None)
 
-if selected == 0:
+if selected == 'Chatbot':
     openai.api_type = "azure"
 
     # Azure OpenAI on your own data is only supported by the 2023-08-01-preview API version
