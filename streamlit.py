@@ -47,7 +47,7 @@ if selected == 'Chatbot':
     deployment_id = "chatbot_flamero" # Add your deployment ID here
     # Azure Cognitive Search setup
     search_endpoint = "https://chatbotflamero.search.windows.net"; # Add your Azure Cognitive Search endpoint here
-    search_key = os.getenv("4BCsu5yM5VNcjZaGSSB51GEWXAjLvwrUy3d0fS0J2RAzSeBUkCIh"); # Add your Azure Cognitive Search admin key here
+    search_key = "4BCsu5yM5VNcjZaGSSB51GEWXAjLvwrUy3d0fS0J2RAzSeBUkCIh"; # Add your Azure Cognitive Search admin key here
     search_index_name = "chatbotflamero1"; # Add your Azure Cognitive Search index name here
     
     def setup_byod(deployment_id: str) -> None:
