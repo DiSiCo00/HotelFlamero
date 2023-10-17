@@ -39,16 +39,16 @@ if selected == 'Chatbot':
     openai.api_type = "azure"
 
     # Azure OpenAI on your own data is only supported by the 2023-08-01-preview API version
-    openai.api_version = "2023-08-01-preview"
+    openai.api_version = "2023-07-01-preview"
 
     # Azure OpenAI setup
-    openai.api_base = "https://chatbotflamero.openai.azure.com/openai/deployments/chatbot_flamero/extensions/chat/completions?api-version=2023-07-01-preview" # Add your endpoint here
-    openai.api_key = "ff4e5db40bb04cdca3e4d62afa342369" # Add your OpenAI API key here
+    openai.api_base = "https://chatbotflamero.openai.azure.com/openai/deployments/chatflamero/extensions/chat/completions?api-version=2023-07-01-preview" # Add your endpoint here
+    openai.api_key = os.getenv("ff4e5db40bb04cdca3e4d62afa342369") # Add your OpenAI API key here
     deployment_id = "chatbot_flamero" # Add your deployment ID here
     # Azure Cognitive Search setup
     search_endpoint = "https://chatbotflamero.search.windows.net"; # Add your Azure Cognitive Search endpoint here
-    search_key = "4BCsu5yM5VNcjZaGSSB51GEWXAjLvwrUy3d0fS0J2RAzSeBUkCIh"; # Add your Azure Cognitive Search admin key here
-    search_index_name = "flameroindex"; # Add your Azure Cognitive Search index name here
+    search_key = os.getenv("4BCsu5yM5VNcjZaGSSB51GEWXAjLvwrUy3d0fS0J2RAzSeBUkCIh"); # Add your Azure Cognitive Search admin key here
+    search_index_name = "chatbotflamero1"; # Add your Azure Cognitive Search index name here
     
     def setup_byod(deployment_id: str) -> None:
         """Sets up the OpenAI Python SDK to use your own data for the chat endpoint.
