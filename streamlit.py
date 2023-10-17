@@ -42,7 +42,7 @@ if selected == 'Chatbot':
     openai.api_version = "2023-08-01-preview"
 
     # Azure OpenAI setup
-    openai.api_base = "https://chatbotflamero.openai.azure.com/openai/deployments/chatflamero/extensions/chat/completions?api-version=2023-07-01-preview" # Add your endpoint here
+    openai.api_base = "https://chatbotflamero.openai.azure.com" # Add your endpoint here
     openai.api_key = os.getenv("ff4e5db40bb04cdca3e4d62afa342369") # Add your OpenAI API key here
     deployment_id = "chatbot_flamero" # Add your deployment ID here
     # Azure Cognitive Search setup
