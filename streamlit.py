@@ -98,10 +98,6 @@ if selected == 'Reserva':#st.button('Reserva'):
     ## REALIZA TU RESERVA AHORA
     """)
 
-    hoy=st.date_input('¿Qué día es hoy?',
-            min_value=pd.to_datetime(datetime.now()),
-            max_value=pd.to_datetime('31/8/2024',dayfirst=True))
-
     #Recuperamos el modelo del random forest
     random_forest = joblib.load("random_forest.pkl")
 
@@ -120,7 +116,7 @@ if selected == 'Reserva':#st.button('Reserva'):
     cancelaciones=pd.read_csv('cancelaciones.csv')
 
     #Función para predercir la probabilidad de cancelación de una reserva con un modelo determinado
-    def predict_model(obj,model=random_forest):
+    def predict_prob(obj,model=random_forest):
       #Recuperamos las variables que participan en la predicción del modelo
       columnas_X=['Noches','Tip.Hab.Fra.','Régimen factura', 'AD', 'NI','CU','Horario venta',
             'Precio alojamiento','Precio desayuno', 'Precio almuerzo', 'Precio cena',
@@ -129,8 +125,12 @@ if selected == 'Reserva':#st.button('Reserva'):
       #Tomamos nuestra base de entrenamiento para realizar el proceso de normalización y One Hot Encoding
       _sample = reservas_total[columnas_X]
 
+      #Copiamos el objeto para eliminar la variable fecha de entrada y poder añadirlo al resto de datos 
+      obj_copy=obj.copy()
+      obj_copy.pop('Fecha entrada')
+
       #Añadimos la nueva reserva a los datos
-      X_new = pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
+      X_new = pd.concat([_sample, pd.DataFrame(obj_copy,index=[0])], ignore_index=True)
 
       #One Hot Encoding de las variables categóricas
       X_new = pd.get_dummies(X_new, columns=["Tip.Hab.Fra.", "Régimen factura","Horario venta", "Mes Entrada", "Mes Venta"], drop_first=True)
@@ -257,6 +257,10 @@ if selected == 'Reserva':#st.button('Reserva'):
     #Función para crear nuevas reservas
     def new_Booking():
       reservas_total=pd.read_csv('reservas_total_preprocesado.csv')
+
+      hoy=st.date_input('¿Qué día es hoy?',
+            min_value=pd.to_datetime(datetime.now()),
+            max_value=pd.to_datetime('31/8/2024',dayfirst=True))
     
       fecha_entrada=st.date_input('Introduzca la fecha de entrada:',
                 value=pd.to_datetime('16/6/2024', dayfirst=True),
@@ -307,6 +311,7 @@ if selected == 'Reserva':#st.button('Reserva'):
       precio_total=precio_alojamiento+precio_desayuno+precio_almuerzo+precio_cena
 
       obj = {
+        "Fecha entrada": fecha_entrada,
         "Noches": noches,
         "Tip.Hab.Fra." : room_type,
         "Régimen factura": regimen,
@@ -327,7 +332,7 @@ if selected == 'Reserva':#st.button('Reserva'):
       return obj
 
     #Función para predecir la fecha de cancelación de la reserva
-    def cancel_date(obj: dict,model_canc=random_forest_canc):
+    def predict_date_score(obj: dict,model_canc=random_forest_canc):
       #Definimos las variables que usaremos en el modelo
       columnas_canc_X = ['Noches', 'Tip.Hab.Fra.', 'Régimen factura', 'AD', 'NI', 'CU', 'Horario venta', 'Precio alojamiento', 'Precio desayuno',
                        'Precio almuerzo', 'Precio cena', 'Cantidad Habitaciones', 'Mes Entrada', 'Mes Venta', 'Antelacion']
@@ -355,34 +360,40 @@ if selected == 'Reserva':#st.button('Reserva'):
       return _score
 
     #Función cuota no reembolsable
-    def func_no_reembolso(_obj, _cuota_media=0.25, _cuota_maxima=0.5, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
+def func_no_reembolso(_obj, _cuota_media=0.10, _cuota_maxima=0.25, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
+    if 0 <= _cuota_maxima <= 1:
+      if 0 <= _cuota_media <= 1:
+        if 0 <= _umbral_inferior <= 1:
+          if 0 <= _umbral_superior <= 1:
+            if _umbral_superior >_umbral_inferior:
 
-        if 0 <= _cuota_maxima <= 1:
-          if 0 <= _cuota_media <= 1:
-            if 0 <= _umbral_inferior <= 1:
-              if 0 <= _umbral_superior <= 1:
-                if _umbral_superior >_umbral_inferior:
+              _pred = predict_prob(_obj, model)
 
-                  _pred = predict_model(_obj, model)
-
-                  if _pred < _umbral_inferior:
-                    st.write("La nueva reserva tiene bajo riesgo de cancelación. Cancelación gratuita.")
-                  elif _pred > _umbral_superior:
-                    st.write(f"Alto Riesgo de cancelación. Aplicar {(_cuota_maxima)*100:.1f}% del Precio total.")
-                    cancel_date(_obj, model_canc)
-                  else:
-                    st.write(f"Riesgo Moderado. Aplicar el {float((_cuota_media)*100):.1f}% del precio total. \n")
-                    cancel_date(_obj, model_canc)
+              if _pred < _umbral_inferior:
+                if predict_date_score(_obj,model_canc)<0.5:
+                  st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
                 else:
-                  raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
+                  st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
+              elif _pred > _umbral_superior:
+                if predict_date_score(_obj,model_canc)<0.5:
+                  st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
+                else:
+                  st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
               else:
-                raise ValueError("El valor ´umbral_superior´ debe estar entre 0 y 1.")
+                if predict_date_score(_obj,model_canc)<0.5:
+                  st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
+                else:
+                  st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 48 horas antes del {_obj['Fecha entrada']}")
             else:
-              raise ValueError("El valor ´umbral_inferior´ debe estar entre 0 y 1.")
+              raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
           else:
-             raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
+            raise ValueError("El valor ´umbral_superior´ debe estar entre 0 y 1.")
         else:
-          raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
+          raise ValueError("El valor ´umbral_inferior´ debe estar entre 0 y 1.")
+      else:
+        raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
+    else:
+      raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
     
     booking=new_Booking()
     if booking != 0:
