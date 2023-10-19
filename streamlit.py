@@ -339,6 +339,10 @@ if selected == 'Reserva':#st.button('Reserva'):
       #Tomamos nuestra base de entrenamiento para realizar el proceso de normalización y One Hot Encoding
       _sample = cancelaciones[columnas_canc_X]
 
+      #Copiamos el objeto para eliminar la variable fecha de entrada y poder añadirlo al resto de datos 
+      obj_copy=obj.copy()
+      obj_copy.pop('Fecha entrada')
+
       #Añadimos la nueva reserva a los datos
       X_new = pd.concat([_sample, pd.DataFrame(obj,index=[0])], ignore_index=True)
 
