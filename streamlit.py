@@ -360,40 +360,40 @@ if selected == 'Reserva':#st.button('Reserva'):
       return _score
 
     #Función cuota no reembolsable
-def func_no_reembolso(_obj, _cuota_media=0.10, _cuota_maxima=0.25, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
-    if 0 <= _cuota_maxima <= 1:
-      if 0 <= _cuota_media <= 1:
-        if 0 <= _umbral_inferior <= 1:
-          if 0 <= _umbral_superior <= 1:
-            if _umbral_superior >_umbral_inferior:
+    def func_no_reembolso(_obj, _cuota_media=0.10, _cuota_maxima=0.25, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
+        if 0 <= _cuota_maxima <= 1:
+          if 0 <= _cuota_media <= 1:
+            if 0 <= _umbral_inferior <= 1:
+              if 0 <= _umbral_superior <= 1:
+                if _umbral_superior >_umbral_inferior:
 
-              _pred = predict_prob(_obj, model)
-
-              if _pred < _umbral_inferior:
-                if predict_date_score(_obj,model_canc)<0.5:
-                  st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
+                  _pred = predict_prob(_obj, model)
+    
+                  if _pred < _umbral_inferior:
+                    if predict_date_score(_obj,model_canc)<0.5:
+                      st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
+                    else:
+                      st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
+                  elif _pred > _umbral_superior:
+                    if predict_date_score(_obj,model_canc)<0.5:
+                      st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
+                    else:
+                      st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
+                  else:
+                    if predict_date_score(_obj,model_canc)<0.5:
+                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
+                    else:
+                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 48 horas antes del {_obj['Fecha entrada']}")
                 else:
-                  st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
-              elif _pred > _umbral_superior:
-                if predict_date_score(_obj,model_canc)<0.5:
-                  st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
-                else:
-                  st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
+                  raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
               else:
-                if predict_date_score(_obj,model_canc)<0.5:
-                  st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
-                else:
-                  st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 48 horas antes del {_obj['Fecha entrada']}")
+                raise ValueError("El valor ´umbral_superior´ debe estar entre 0 y 1.")
             else:
-              raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
+              raise ValueError("El valor ´umbral_inferior´ debe estar entre 0 y 1.")
           else:
-            raise ValueError("El valor ´umbral_superior´ debe estar entre 0 y 1.")
+            raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
         else:
-          raise ValueError("El valor ´umbral_inferior´ debe estar entre 0 y 1.")
-      else:
-        raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
-    else:
-      raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
+          raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
     
     booking=new_Booking()
     if booking != 0:
