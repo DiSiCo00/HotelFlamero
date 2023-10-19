@@ -375,14 +375,14 @@ if selected == 'Reserva':#st.button('Reserva'):
     
                   if _pred < _umbral_inferior:
                     if predict_date_score(_obj,model_canc)<0.5:
-                      st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
                     else:
-                      st.write(f"Bajo riesgo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
                   elif _pred > _umbral_superior:
                     if predict_date_score(_obj,model_canc)<0.5:
-                      st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
                     else:
-                      st.write(f"Alto riesgo de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
                   else:
                     if predict_date_score(_obj,model_canc)<0.5:
                       st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
