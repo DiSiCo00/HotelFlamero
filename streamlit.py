@@ -359,35 +359,39 @@ if selected == 'Reserva':#st.button('Reserva'):
       #Predecimos el score con el modelo
       _score = model_canc.predict(X_norm[-1].reshape(1, -1))
 
+      #Si el score es menor que el primer cuartil, consideramos que la cancelación podría ser tardía
       if _score < 0.5:
           st.write(f"¡¡Aviso de posible cancelación tardía!!")
       return _score
 
     #Función cuota no reembolsable
     def func_no_reembolso(_obj, _cuota_media=0.10, _cuota_maxima=0.25, _umbral_inferior=0.25, _umbral_superior=0.4, model=random_forest, model_canc=random_forest_canc):
+        #Condiciones de control
         if 0 <= _cuota_maxima <= 1:
           if 0 <= _cuota_media <= 1:
             if 0 <= _umbral_inferior <= 1:
               if 0 <= _umbral_superior <= 1:
                 if _umbral_superior >_umbral_inferior:
 
+                  #Predicción de la probabilidad de cancelación
                   _pred = predict_prob(_obj, model)
-    
+
+                  #Según los distintos umbrales y dependiendo del score, las cancelaciones tendrán unas cuotas y fechas de cancelación 
                   if _pred < _umbral_inferior:
                     if predict_date_score(_obj,model_canc)<0.5:
-                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin costo hasta 7 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin coste hasta 7 días antes del {_obj['Fecha entrada']}")
                     else:
-                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin costo hasta 24 horas antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo bajo de cancelación.\nEl huésped podrá cancelar sin coste hasta 24 horas antes del {_obj['Fecha entrada']}")
                   elif _pred > _umbral_superior:
                     if predict_date_score(_obj,model_canc)<0.5:
-                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar perdiendo un {(_cuota_maxima)*100:.1f}% del Precio total hasta 30 días antes del {_obj['Fecha entrada']}")
                     else:
-                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar con un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo alto de cancelación.\nEl huésped podrá cancelar perdiendo un {(_cuota_maxima)*100:.1f}% del Precio total hasta 7 días antes del {_obj['Fecha entrada']}")
                   else:
                     if predict_date_score(_obj,model_canc)<0.5:
-                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar perdiendo un {(_cuota_media)*100:.1f}% del Precio total hasta 14 días antes del {_obj['Fecha entrada']}")
                     else:
-                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar con un {(_cuota_media)*100:.1f}% del Precio total hasta 48 horas antes del {_obj['Fecha entrada']}")
+                      st.write(f"Riesgo moderado de cancelación.\nEl huésped podrá cancelar perdiendo un {(_cuota_media)*100:.1f}% del Precio total hasta 48 horas antes del {_obj['Fecha entrada']}")
                 else:
                   raise ValueError("El valor de ´umbral_superior´  tiene que ser mayor que ´umbral_inferior´.")
               else:
@@ -398,14 +402,17 @@ if selected == 'Reserva':#st.button('Reserva'):
             raise ValueError("El valor ´cuota_media´ debe estar entre 0 y 1.")
         else:
           raise ValueError("El valor ´cuota_maxima´ debe estar entre 0 y 1.")
-    
+
+    #Realizamos la reserva
     booking=new_Booking()
+
+    #Si no recibimos errores, calculamos las cuotas y fechas de cancelación
     if booking != 0:
         func_no_reembolso(booking)
         
         
 if selected == 'Reseñas':
-
+    #Introducimos la reseña
     reseña=st.text_area('Reseña:')
     if len(reseña) != 0:
         sia = SentimentIntensityAnalyzer()
