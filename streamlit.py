@@ -426,7 +426,7 @@ if selected == 'Reseñas':
         categoria_habitacion = ["room", "rooms", "suite", "suites","bathroom", "toilet", "bedroom", "bedrooms", "towels", "roomy", "spacious", "bright", "luminous"]
         categoria_ubicacion = ["location","place","views", "beach", "sea", "preserve", "reserve"]
         categoria_atencion = ["needs", "requirements", "staff", "reception", "support", "help", "care", "careless", "careful", "attendance", "gentle", "charm", "helpful", "attentive", "receptionist", "waiter", "waiters", "cleaner", "cleaners", "service", "employees", "friendly", "unfriendly", "kind", "kindly"]
-        categoria_tranquilidad = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
+        categoria_ambiente = ["quiet", "noise", "noisy", "relax", "chill", "privacy"]
         categoria_comida = ["food", "buffet", "breakfast", "dinner", "lunch", "fruit", "fruits", "gastronomy", "hungry", "meat", "fish", "bread", "delicious"]
         categoria_precio = ["cheap", "expensive", "money", "savings", "economic"]
     
@@ -438,7 +438,7 @@ if selected == 'Reseñas':
             cuenta_limpieza = 0
             cuenta_instalaciones = 0
             cuenta_atencion = 0
-            cuenta_tranquilidad = 0
+            cuenta_ambiente = 0
             cuenta_comida = 0
             cuenta_precio = 0 
         
@@ -458,9 +458,9 @@ if selected == 'Reseñas':
                 elif token in categoria_atencion and cuenta_atencion == 0:
                     categorias.append('Atención al cliente')
                     cuenta_atencion = 1
-                elif token in categoria_tranquilidad and cuenta_tranquilidad == 0:
-                    categorias.append('Tranquilidad')
-                    cuenta_tranquilidad = 1
+                elif token in categoria_ambiente and cuenta_ambiente == 0:
+                    categorias.append('Ambiente')
+                    cuenta_ambiente = 1
                 elif token in categoria_comida and cuenta_comida == 0:
                     categorias.append('Comida')
                     cuenta_comida = 1
